@@ -1263,8 +1263,8 @@ function resetCast(){
   state.shakeCount=0;
   state.shaking=false;
   renderLines();
-  $('shakeNum').textContent='0';
-  $('btnShake').textContent='起 卦';
+  // 重建按钮内容，确保 <span id="shakeNum"> 始终存在
+  $('btnShake').innerHTML='起 卦 <span class="count">(<span id="shakeNum">0</span>/6)</span>';
   $('btnShake').classList.remove('disabled');
   $('shakeHint').textContent='点击起卦 · 心念专注所问之事';
   ['coin0','coin1','coin2'].forEach(id=>{
@@ -1327,13 +1327,14 @@ async function doShake(){
   $('shakeNum').textContent=state.shakeCount;
 
   if(state.shakeCount>=6){
-    btn.textContent='起卦完成';
+    $('btnShake').innerHTML='起卦完成 <span class="count">(<span id="shakeNum">6</span>/6)</span>';
     $('shakeHint').textContent='卦成 · 天机已现';
+    state.shaking=false;
     setTimeout(()=>{
       doPaipan();
-      btn.textContent='重新起卦';
-      btn.classList.remove('disabled');
-      // 不再自动 reset，下次点击"重新起卦"时 doShake 开头会调用 resetCast
+      $('btnShake').innerHTML='重新起卦 <span class="count">(<span id="shakeNum">6</span>/6)</span>';
+      $('btnShake').classList.remove('disabled');
+      // 下次点击"重新起卦"时 doShake 开头会调用 resetCast
     },600);
   }else{
     btn.classList.remove('disabled');state.shaking=false;
