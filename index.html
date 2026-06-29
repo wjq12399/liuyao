@@ -655,7 +655,7 @@ body{
       </div>
 
       <button class="shake-btn" id="btnShake" onclick="doShake()">
-        起 卦 <span class="count">(<span id="shakeNum">0</span>/6)</span>
+        <span id="btnShakeText">起 卦</span> <span class="count">(<span id="shakeNum">0</span>/6)</span>
       </button>
       <div class="shake-hint" id="shakeHint">点击起卦 · 心念专注所问之事</div>
 
@@ -1263,8 +1263,8 @@ function resetCast(){
   state.shakeCount=0;
   state.shaking=false;
   renderLines();
-  // 重建按钮内容，确保 <span id="shakeNum"> 始终存在
-  $('btnShake').innerHTML='起 卦 <span class="count">(<span id="shakeNum">0</span>/6)</span>';
+  $('shakeNum').textContent='0';
+  $('btnShakeText').textContent='起 卦';
   $('btnShake').classList.remove('disabled');
   $('shakeHint').textContent='点击起卦 · 心念专注所问之事';
   ['coin0','coin1','coin2'].forEach(id=>{
@@ -1327,14 +1327,13 @@ async function doShake(){
   $('shakeNum').textContent=state.shakeCount;
 
   if(state.shakeCount>=6){
-    $('btnShake').innerHTML='起卦完成 <span class="count">(<span id="shakeNum">6</span>/6)</span>';
+    $('btnShakeText').textContent='起卦完成';
     $('shakeHint').textContent='卦成 · 天机已现';
     state.shaking=false;
     setTimeout(()=>{
       doPaipan();
-      $('btnShake').innerHTML='重新起卦 <span class="count">(<span id="shakeNum">6</span>/6)</span>';
+      $('btnShakeText').textContent='重新起卦';
       $('btnShake').classList.remove('disabled');
-      // 下次点击"重新起卦"时 doShake 开头会调用 resetCast
     },600);
   }else{
     btn.classList.remove('disabled');state.shaking=false;
